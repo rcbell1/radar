@@ -1,5 +1,4 @@
 close all; clear
-rng(10024)
 
 %% Transceiver parameters
 sampleRate = 100e6;         % Sample rate (Hz)
