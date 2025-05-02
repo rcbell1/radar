@@ -1,4 +1,9 @@
 classdef Config < handle
+    % This class holds the user defined configuration parameters that
+    % define the LFM radar properties. It allows us to validate input early
+    % to catch poorly conceived parameter selections. It also allows
+    % derived quantities to be computed and stored.
+
     properties
         sampleRate (1,1) {mustBeFloat}     % Sampling rate (Hz)
         prf (1,1) {mustBeFloat}            % Pulse repetition frequency (Hz)

@@ -1,7 +1,11 @@
 classdef Scenario < handle
+    % This class generates channel scenarios based on user defined input
+
     properties
         cfgObj Config
         txRxObj Transceiver
+        randomEchos (1,1) logical = true
+        userEchoDelays (:,1) {mustBeNonnegative} = []
         echoDelays (:,:) {mustBeFloat}
         echoTaps (:,:) {mustBeFloat}
         numPulses (1,1) {mustBeFloat}
@@ -21,11 +25,18 @@ classdef Scenario < handle
                 opts.snrDb (:,1) {Scenario.mustBeCorrectSize(opts.snrDb, ...
                     maxEchoesPerSegment)} = []
                 opts.velocityMph (1,1) {mustBeFloat} = 0
+                opts.echoDelays (:,1) {mustBeNonnegative} = []
             end
             this.cfgObj = cfgObj;
             this.txRxObj = txRxObj;
             this.maxEchoesPerSegment = maxEchoesPerSegment;
             this.numPulses = opts.numPulses;
+            if isempty(opts.echoDelays)
+                this.randomEchos = true;
+            else
+                this.randomEchos = false;
+                this.userEchoDelays = opts.echoDelays;
+            end
             if isempty(opts.snrDb)
                 this.snrDb = (this.maxSnrDb+this.minSnrDb) * ...
                     rand(maxEchoesPerSegment,1) - this.minSnrDb;
@@ -40,11 +51,16 @@ classdef Scenario < handle
         function r = apply(this)
             % Inject echoes for each PRI with FIR model
 
-            this.echoDelays = randi([1, this.cfgObj.maxPulseDelay], ...
-                this.numPulses, this.maxEchoesPerSegment);
-            % this.echoTaps = sqrt(10.^(this.snrDb'/10)) .* ...
-            %     exp(1j*2*pi*rand(size(this.echoDelays,1),1));
-            this.echoTaps = sqrt(10.^(this.snrDb'/10)) .* ones(size(this.echoDelays,1),1);
+            if this.randomEchos
+                this.echoDelays = randi([1, this.cfgObj.maxPulseDelay], ...
+                    this.numPulses, this.maxEchoesPerSegment);
+            else
+                this.echoDelays = this.userEchoDelays.' .* ...
+                    ones(this.numPulses, this.maxEchoesPerSegment);
+            end
+
+            this.echoTaps = sqrt(10.^(this.snrDb'/10)) .* ...
+                exp(1j*2*pi*rand(size(this.echoDelays,1),1));
 
             r = zeros(this.numPulses*this.cfgObj.sampsPerSegment,1);
             for k = 1:this.numPulses

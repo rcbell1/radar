@@ -1,4 +1,9 @@
 classdef Transceiver < handle
+    % This class generates LFM radar samples and processes them through a
+    % matched filter. Any number of matched filter implementations can be
+    % included as functions and chosen by the user at the time of object
+    % creation
+
     properties
         cfgObj Config
         sceneObj Scenario
@@ -19,7 +24,6 @@ classdef Transceiver < handle
         downChirpMfFreq (:,1) {mustBeFloat}
         startIdxUp (1,1) {mustBePositive} = 1
         startIdxDown (1,1) {mustBePositive} = 1
-
         Hmat (:,:) {mustBeFloat}
         oddIdxs (:,1) {mustBePositive} = 1
         evenIdxs (:,1) {mustBePositive} = 1

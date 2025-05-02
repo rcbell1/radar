@@ -11,10 +11,10 @@ startFreqDown = 6e4;        % Down-chirp start freq (Hz)
 stopFreqDown = 3e4;         % Down-chirp end freq (Hz)
 
 %% Scenario Parameters
-numPulses = 10;           % Number of consecutive pulse segments to sim
+numPulses = 4;              % Number of consecutive pulse segments to sim
 maxEchoesPerSegment = 1;    % Maximum number of echoes per segment
-snrDb = -10;                % Received SNR of echoes
-velocityMph = 5000;         % Radial velocity (Mph), positive inward
+snrDb = 0;                  % Received SNR of echoes
+velocityMph = 30000;        % Radial velocity (Mph), positive inward
 
 %% Generate simulation objects
 cfgObj = Config(sampleRate, prf, pulseWidthUp, startFreqUp, ...

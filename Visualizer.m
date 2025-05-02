@@ -1,4 +1,6 @@
 classdef Visualizer < handle
+    % This class holds plotting functions that are useful for LFM radar
+    
     methods(Static)
         function chirps(txRxObj)
             t = tiledlayout(2, 1, 'TileSpacing', 'compact', ...
