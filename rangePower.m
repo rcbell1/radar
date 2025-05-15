@@ -21,7 +21,7 @@ snrrx_dbm = ptx_dbw + gtx_db + grx_db + 10*log10(rcs_m2) + ...
     10*log10(k*temp) - 10*log10(bw_hz) - noisefig_db;
 
 plot(range_mi, snrrx_dbm)
-ylabel('SNR (dBm)')
+ylabel('SNR (dBW)')
 xlabel('One-way Range (miles)')
 grid; grid minor
 
